@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ALS_Scheduler.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">2018_spring_13 (2018年6月6日 下午4:56:45)</a> &gt; <a href="../../index.html" class="el_group">2018_spring_13</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">top.buaaoo.project13</a> &gt; <span class="el_source">ALS_Scheduler.java</span></div><h1>ALS_Scheduler.java</h1><pre class="source lang-java linenums">package top.buaaoo.project13;
+
+public class ALS_Scheduler{
+    /**
+     * Overview: 调度器类，负责对同质请求，可捎带请求的检查与执行同侧或非同层请求等;
+     * 
+     */
+    
+    private RequestQueue reqQueue;
+    private Elevator elevator;
+    private String status;
+    
+    /**
+     * @REQUIRES: \this != null;
+     * @MODIFIES: None;
+     * @EFFECTS: ((reqQueue != null) &amp;&amp; (elevator != null) &amp;&amp; (status != null &amp;&amp; (status.equals(&quot;UP&quot;) || status.equals(&quot;DOWN&quot;) || status.equals(&quot;STILL&quot;)))) ==&gt; (\result == true);
+     *           (!((reqQueue != null) &amp;&amp; (elevator != null) &amp;&amp; (status != null &amp;&amp; (status.equals(&quot;UP&quot;) || status.equals(&quot;DOWN&quot;) || status.equals(&quot;STILL&quot;))))) ==&gt; (\result == false);
+     */
+    public boolean repOK() {
+<span class="fc bfc" id="L20" title="All 12 branches covered.">        return ((reqQueue != null) &amp;&amp; (elevator != null) &amp;&amp; (status != null &amp;&amp; (status.equals(&quot;UP&quot;) || status.equals(&quot;DOWN&quot;) || status.equals(&quot;STILL&quot;))));</span>
+    }
+      
+    
+    /**
+     * @REQUIRES: requestQueue != null &amp;&amp; elevator != null;
+     * @MODIFIES: \this.elevator;\this.reqQueue;\this.status;
+     * @EFFECTS: \this.elevator == elevator &amp;&amp; \this.reqQueue == requestQueue &amp;&amp; \this.status.equals(&quot;STILL&quot;);
+     */
+<span class="fc" id="L29">    ALS_Scheduler(RequestQueue requestQueue,Elevator elevator) {</span>
+<span class="fc" id="L30">        this.elevator = elevator;</span>
+<span class="fc" id="L31">        this.reqQueue = requestQueue;</span>
+<span class="fc" id="L32">        this.status = &quot;STILL&quot;;</span>
+<span class="fc" id="L33">    }</span>
+    
+    
+    /** 
+     * @REQUIRES: \this != null;
+     * @MODIFIES: None;
+     * @EFFECTS: \result == \this.status;
+     */
+    public String getStatus() {
+<span class="fc" id="L42">        return status;</span>
+    }
+    
+    /**
+     * @REQUIRES: \this != null &amp;&amp; str != null &amp;&amp; (str.equals(&quot;UP&quot;) || str.equals(&quot;DOWN&quot;) || str.equals(&quot;STILL&quot;));
+     * @MODIFIES: \this.status;
+     * @EFFECTS: \this.status == str;
+     */
+    public void setStatus(String str) {
+<span class="fc" id="L51">        this.status = str;</span>
+<span class="fc" id="L52">    }</span>
+    
+    /**
+     * @REQUIRES: \this != null &amp;&amp; 1&lt;=currentFloor&lt;=10 &amp;&amp; 1&lt;=targetFloor&lt;=10;
+     * @MODIFIES: \this.status;\this.elevator;
+     * @EFFECTS: (targetFloor &gt; currentFloor) ==&gt; (\this.status.equals(&quot;UP&quot;) &amp;&amp; \this.elevator.currentStatus.equals(&quot;UP&quot;));
+     *           (targetFloor &lt; currentFloor) ==&gt; (\this.status.equals(&quot;DOWN&quot;) &amp;&amp; \this.elevator.currentStatus.equals(&quot;DOWN&quot;));
+     *           (targetFloor == currentFloor) ==&gt; (\this.status.equals(&quot;STILL&quot;) &amp;&amp; \this.elevator.currentStatus.equals(&quot;STILL&quot;));
+     * 
+     */
+    void updateStatus(int currentFloor, int targetFloor) {
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (targetFloor &gt; currentFloor) {</span>
+<span class="fc" id="L64">            status = &quot;UP&quot;;</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        } else if (targetFloor &lt; currentFloor) {</span>
+<span class="fc" id="L66">            status = &quot;DOWN&quot;;</span>
+<span class="fc" id="L67">        } else {</span>
+<span class="fc" id="L68">            status = &quot;STILL&quot;;</span>
+        }
+<span class="fc" id="L70">        elevator.setStatus(status);</span>
+<span class="fc" id="L71">    }</span>
+    
+    
+    /**
+     * @REQUIRES: \this != null &amp;&amp; request != null &amp;&amp; \this.elevator.getFloor() == request.getFloor();
+     * @MODIFIES: \this.elevator;\this.reqQueue;request;System.out;
+     * @EFFECTS: (\this.elevator.currentTime == \old(\this.elevator.currentTime) + 1) &amp;&amp;
+     *           (request.getIsExecuted() == true) &amp;&amp; System.out有调度结果输出;
+     */
+    void runStill(Request request) {
+<span class="fc" id="L81">        elevator.setTime(elevator.getTime() + 1);</span>
+<span class="fc" id="L82">        request.setExecuted();</span>
+<span class="fc" id="L83">        System.out.println(elevator.toString(request));</span>
+<span class="fc" id="L84">        checkSameRequest(request, elevator.getTime());</span>
+<span class="fc" id="L85">    }</span>
+    
+    
+    
+    /**
+     * @REQUIRES: \this != null &amp;&amp; request != null &amp;&amp; \this.elevator.getFloor() != request.getFloor();
+     * @MODIFIES: \this.elevator;
+     * @EFFECTS: (\this.elevator.currentTime &gt; \old(\this.elevator.currentTime)) &amp;&amp;
+     *           (\this.elevator.getFloor() == request.getFloor());
+     */
+    void runUpOrDown(Request request){
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        while (request.getFloor() != elevator.getFloor()) {</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            if (status.equals(&quot;UP&quot;)) {</span>
+<span class="fc" id="L98">                elevator.setFloor(elevator.getFloor() + 1);</span>
+<span class="fc" id="L99">            } else {</span>
+<span class="fc" id="L100">                elevator.setFloor(elevator.getFloor() - 1);</span>
+            }
+<span class="fc" id="L102">            elevator.setTime(elevator.getTime() + 0.5);</span>
+ 
+<span class="fc bfc" id="L104" title="All 2 branches covered.">            if (checkPiggybacking(request)) {</span>
+<span class="fc" id="L105">                elevator.setTime(elevator.getTime() + 1);</span>
+            } 
+        }
+<span class="fc" id="L108">    }</span>
+    
+     
+    
+    /**
+     * @REQUIRES: \this != null &amp;&amp; \this.reqQueue != null &amp;&amp; request != null &amp;&amp; finishTime &gt;= elevator.getTime();
+     * @MODIFIES: \this.reqQueue;System.out;
+     * @EFFECTS: (!reqQueue.isEmpty()) ==&gt; (\all int i;(i &gt;= reqQueue.getFront() &amp;&amp; i &lt;= reqQueue.getRear() &amp;&amp;
+     *           reqQueue.get(i).getTime() &lt;= finishTime &amp;&amp;
+     *           !reqQueue.get(i).getIsSame() &amp;&amp; !reqQueue.get(i).getIsExecuted() &amp;&amp; 
+     *           reqQueue.get(i).getDirection().equals(req.getDirection()) &amp;&amp;
+     *           reqQueue.get(i).getFloor() == req.getFloor());(reqQueue.get(i).getIsSame() &amp;&amp; System.out有提示信息输出));
+     */
+    void checkSameRequest(Request req, double finishTime) {// finishTime为请求req执行完成的时间
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if(!reqQueue.isEmpty()) { </span>
+<span class="fc bfc" id="L123" title="All 4 branches covered.">            for (int i = reqQueue.getFront(); i &lt;= reqQueue.getRear() &amp;&amp; reqQueue.get(i).getTime() &lt;= finishTime; i++) {</span>
+<span class="fc bfc" id="L124" title="All 4 branches covered.">                boolean bool = !reqQueue.get(i).getIsSame() &amp;&amp; !reqQueue.get(i).getIsExecuted()</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">                        &amp;&amp; reqQueue.get(i).getDirection().equals(req.getDirection())</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                        &amp;&amp; reqQueue.get(i).getFloor() == req.getFloor();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">                if (bool) {</span>
+<span class="fc" id="L128">                    reqQueue.get(i).setSame();</span>
+<span class="fc" id="L129">                    System.out.println(&quot;#SAME[&quot; + reqQueue.get(i) + &quot;]&quot;);</span>
+                }
+            }
+        }
+<span class="fc" id="L133">    }</span>
+    
+    /**
+     * @REQUIRES: \this != null &amp;&amp; \this.reqQueue != null &amp;&amp; \this.elevator != null &amp;&amp; req != null;
+     * @MODIFIES: \this.reqQueue;System.out;
+     * @EFFECTS: (reqQueue.getFront()&gt;0) ==&gt; (\all int i;(i &gt;= reqQueue.getFront()-1 &amp;&amp; i &lt;= reqQueue.getRear() &amp;&amp;
+     *            reqQueue.get(i).getTime() &lt; elevator.getTime() &amp;&amp;
+     *           !reqQueue.get(i).getIsSame() &amp;&amp; !reqQueue.get(i).getIsExecuted()
+     *           &amp;&amp; reqQueue.get(i).getFloor() == elevator.getFloor() &amp;&amp; (reqQueue.get(i).getDirection().equals(&quot;ER&quot;)
+     *           || reqQueue.get(i) == req || reqQueue.get(i).getDirection().equals(elevator.getStatus())));(reqQueue.get(i).getIsExecuted() &amp;&amp; System.out有提示信息输出));
+     *           (reqQueue.getFront()&gt;0) ==&gt; (\result == (\exist int i;(i &gt;= reqQueue.getFront()-1 &amp;&amp; i &lt;= reqQueue.getRear() &amp;&amp;
+     *            reqQueue.get(i).getTime() &lt; elevator.getTime() &amp;&amp;
+     *           !reqQueue.get(i).getIsSame() &amp;&amp; !reqQueue.get(i).getIsExecuted()
+     *           &amp;&amp; reqQueue.get(i).getFloor() == elevator.getFloor() &amp;&amp; (reqQueue.get(i).getDirection().equals(&quot;ER&quot;)
+     *           || reqQueue.get(i) == req || reqQueue.get(i).getDirection().equals(elevator.getStatus())))));
+     *           (reqQueue.getFront()&lt;=0) ==&gt; (\result == false); 
+     */
+    boolean checkPiggybacking(Request req) { // 检查是否可以捎带其他请求
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if(reqQueue.getFront()&lt;=0) {</span>
+<span class="fc" id="L152">            return false;</span>
+        } 
+<span class="fc" id="L154">        boolean flag = false; </span>
+<span class="fc bfc" id="L155" title="All 4 branches covered.">        for (int i = reqQueue.getFront() - 1; i &lt;= reqQueue.getRear() &amp;&amp; reqQueue.get(i).getTime() &lt; elevator.getTime(); i++) {</span>
+<span class="fc bfc" id="L156" title="All 4 branches covered.">            boolean bool = !reqQueue.get(i).getIsSame() &amp;&amp; !reqQueue.get(i).getIsExecuted() </span>
+<span class="fc bfc" id="L157" title="All 4 branches covered.">                    &amp;&amp; reqQueue.get(i).getFloor() == elevator.getFloor() &amp;&amp; (reqQueue.get(i).getDirection().equals(&quot;ER&quot;)</span>
+<span class="fc bfc" id="L158" title="All 4 branches covered.">                            || reqQueue.get(i) == req || reqQueue.get(i).getDirection().equals(elevator.getStatus()));</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">            if (bool) {</span>
+<span class="fc" id="L160">                reqQueue.get(i).setExecuted();</span>
+<span class="fc" id="L161">                System.out.println(elevator.toString(reqQueue.get(i)));</span>
+<span class="fc" id="L162">                checkSameRequest(reqQueue.get(i), elevator.getTime() + 1);</span>
+<span class="fc" id="L163">                flag = true;</span>
+            }
+        }
+<span class="fc" id="L166">        return flag;</span>
+    }
+     
+    
+    
+    /**
+     * @REQUIRES: \this != null &amp;&amp; \this.reqQueue != null &amp;&amp; \this.elevator != null &amp;&amp; req != null;
+     * @MODIFIES: None;
+     * @EFFECTS: (\exist int i;(i &gt;= reqQueue.getFront() &amp;&amp; i &lt;= reqQueue.getRear() &amp;&amp;
+     *           reqQueue.get(i).getTime() &lt; elevator.getTime() - 1 &amp;&amp;
+     *           !reqQueue.get(i).getIsSame() &amp;&amp; !reqQueue.get(i).getIsExecuted()
+     *           &amp;&amp; reqQueue.get(i).getDirection().equals(&quot;ER&quot;)
+     *           &amp;&amp; (elevator.getStatus().equals(&quot;UP&quot;) &amp;&amp; reqQueue.get(i).getFloor() &gt; elevator.getFloor()
+     *           || elevator.getStatus().equals(&quot;DOWN&quot;) &amp;&amp; reqQueue.get(i).getFloor() &lt; elevator.getFloor()))) ==&gt; (\result == \this.reqQueue.get(i));
+     *           !(\exist int i;(i &gt;= reqQueue.getFront() &amp;&amp; i &lt;= reqQueue.getRear() &amp;&amp;
+     *           reqQueue.get(i).getTime() &lt; elevator.getTime() - 1 &amp;&amp;
+     *           !reqQueue.get(i).getIsSame() &amp;&amp; !reqQueue.get(i).getIsExecuted()
+     *           &amp;&amp; reqQueue.get(i).getDirection().equals(&quot;ER&quot;)
+     *           &amp;&amp; (elevator.getStatus().equals(&quot;UP&quot;) &amp;&amp; reqQueue.get(i).getFloor() &gt; elevator.getFloor()
+     *           || elevator.getStatus().equals(&quot;DOWN&quot;) &amp;&amp; reqQueue.get(i).getFloor() &lt; elevator.getFloor()))) ==&gt; (\result == req);
+     */
+    Request changeMainRequest(Request req) { // 检查是否可以更换主请求
+<span class="fc bfc" id="L188" title="All 4 branches covered.">        for (int i = reqQueue.getFront(); i &lt;= reqQueue.getRear() &amp;&amp; reqQueue.get(i).getTime() &lt; elevator.getTime() - 1; i++) {</span>
+<span class="fc bfc" id="L189" title="All 6 branches covered.">            boolean bool = !reqQueue.get(i).getIsSame() &amp;&amp; !reqQueue.get(i).getIsExecuted()</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                    &amp;&amp; reqQueue.get(i).getDirection().equals(&quot;ER&quot;)</span>
+<span class="fc bfc" id="L191" title="All 4 branches covered.">                    &amp;&amp; (elevator.getStatus().equals(&quot;UP&quot;) &amp;&amp; reqQueue.get(i).getFloor() &gt; elevator.getFloor()</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">                            || elevator.getStatus().equals(&quot;DOWN&quot;) &amp;&amp; reqQueue.get(i).getFloor() &lt; elevator.getFloor());</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">            if (bool) { </span>
+<span class="fc" id="L194">                return reqQueue.get(i); </span>
+            }
+        }
+<span class="fc" id="L197">        return req;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>2018_spring_13 (2018年6月6日 下午4:56:45)</div></body></html>

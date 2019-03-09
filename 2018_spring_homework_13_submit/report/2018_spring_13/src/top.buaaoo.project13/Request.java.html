@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Request.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">2018_spring_13 (2018年6月6日 下午4:56:45)</a> &gt; <a href="../../index.html" class="el_group">2018_spring_13</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">top.buaaoo.project13</a> &gt; <span class="el_source">Request.java</span></div><h1>Request.java</h1><pre class="source lang-java linenums">package top.buaaoo.project13;
+
+public class Request {
+	
+<span class="fc" id="L5">	private static Boolean isFirst=true;  //isFirst代表是否有可能成为第一个有效输入</span>
+<span class="fc" id="L6">	private static long lastTime=0; //lastTime代表上一个有效请求的时间</span>
+
+	private int floor;
+	private long time;
+	private String direction;
+	private boolean isSame; //标记该请求是否为同质请求
+	private boolean isExecuted; //标记该请求是否已被（捎带）执行
+	 
+<span class="fc" id="L14">	Request(int floor ,long time, String direction) {</span>
+<span class="fc" id="L15">		this.floor = floor;</span>
+<span class="fc" id="L16">		this.time = time;</span>
+		//this.direction = new String(direction);
+<span class="fc" id="L18">		this.direction = direction;</span>
+<span class="fc" id="L19">		isSame = false;</span>
+<span class="fc" id="L20">		isExecuted = false;</span>
+		
+<span class="fc" id="L22">	}</span>
+	 
+ 
+	static boolean checkFormat(int floor ,long time, String direction) {
+<span class="fc bfc" id="L26" title="All 4 branches covered.">		if(floor&lt;1 || floor&gt;10) {</span>
+<span class="fc" id="L27">			return false;</span>
+		}
+<span class="fc bfc" id="L29" title="All 8 branches covered.">		else if(floor==1 &amp;&amp; &quot;DOWN&quot;.equals(direction) || floor==10 &amp;&amp; &quot;UP&quot;.equals(direction)) {</span>
+<span class="fc" id="L30">			return false;</span>
+		}
+<span class="fc bfc" id="L32" title="All 4 branches covered.">		else if(time&lt;0 || time&gt;4294967295L) {</span>
+<span class="fc" id="L33">			return false;</span>
+		}
+<span class="fc bfc" id="L35" title="All 2 branches covered.">		else if(isFirst) {</span>
+<span class="fc bfc" id="L36" title="All 6 branches covered.">			if(!(floor==1 &amp;&amp; &quot;UP&quot;.equals(direction) &amp;&amp; time==0)) {</span>
+<span class="fc" id="L37">				return false; </span>
+			}
+			else {
+<span class="fc" id="L40">				isFirst = false; </span>
+			}
+<span class="fc" id="L42">		}</span>
+		else {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">			if(time&lt;lastTime) {</span>
+<span class="fc" id="L45">				return false;</span>
+			}
+			else {
+<span class="fc" id="L48">				lastTime = time;</span>
+			}
+		}
+<span class="fc" id="L51">		return true;</span>
+	}
+	
+	public String toString() {
+		String str;
+<span class="fc bfc" id="L56" title="All 2 branches covered.">		if(&quot;ER&quot;.equals(direction)) {</span>
+<span class="fc" id="L57">			str = &quot;ER,&quot;+floor+&quot;,&quot;+time;</span>
+<span class="fc" id="L58">		}</span>
+		else {
+<span class="fc" id="L60">			str = &quot;FR,&quot;+floor+&quot;,&quot;+direction+&quot;,&quot;+time;</span>
+		}
+<span class="fc" id="L62">		return str;</span>
+	}
+	
+	 
+	int getFloor() {
+<span class="fc" id="L67">		return floor;</span>
+	}
+	
+	long getTime() {
+<span class="fc" id="L71">		return time;</span>
+	}
+	
+	String getDirection() {
+<span class="fc" id="L75">		return direction;</span>
+	}
+	
+	boolean getIsSame() {
+<span class="fc" id="L79">		return isSame;</span>
+	}
+	
+	void setSame() {
+<span class="fc" id="L83">		isSame = true;</span>
+<span class="fc" id="L84">	}</span>
+	
+	boolean getIsExecuted() {
+<span class="fc" id="L87">		return isExecuted;</span>
+	}
+	
+	void setExecuted() {
+<span class="fc" id="L91">		isExecuted = true;</span>
+<span class="fc" id="L92">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>2018_spring_13 (2018年6月6日 下午4:56:45)</div></body></html>

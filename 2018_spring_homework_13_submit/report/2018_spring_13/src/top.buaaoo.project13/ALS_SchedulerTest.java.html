@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ALS_SchedulerTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">2018_spring_13 (2018年6月6日 下午4:56:45)</a> &gt; <a href="../../index.html" class="el_group">2018_spring_13</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">top.buaaoo.project13</a> &gt; <span class="el_source">ALS_SchedulerTest.java</span></div><h1>ALS_SchedulerTest.java</h1><pre class="source lang-java linenums">package top.buaaoo.project13;
+
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+
+<span class="pc bpc" id="L9" title="1 of 2 branches missed.">public class ALS_SchedulerTest {</span>
+
+<span class="fc" id="L11">    private static int i;</span>
+    private ALS_Scheduler scheduler;
+    private RequestQueue requestQueue;
+    private Elevator elevator;
+    
+    @Before
+    public void setUp() throws Exception {
+<span class="fc" id="L18">        requestQueue = new RequestQueue();</span>
+<span class="fc" id="L19">        elevator = new Elevator();</span>
+<span class="fc" id="L20">        scheduler = new ALS_Scheduler(requestQueue, elevator);</span>
+<span class="fc" id="L21">        System.out.println(&quot;-----test ALS_Scheduler &quot;+ i +&quot; begins-----&quot;);</span>
+<span class="fc" id="L22">    }</span>
+
+    @After
+    public void tearDown() throws Exception {
+<span class="fc" id="L26">        elevator = null;</span>
+<span class="fc" id="L27">        System.out.println(&quot;-----test ALS_Scheduler &quot;+ i++ +&quot; ends-----&quot;);</span>
+<span class="fc" id="L28">    }</span>
+    @Test
+    public void testRepOK() {
+<span class="pc bpc" id="L31" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;STILL&quot;);</span>
+<span class="pc bpc" id="L32" title="2 of 4 branches missed.">        assert scheduler.repOK();</span>
+
+<span class="fc" id="L34">        scheduler.setStatus(&quot;UP&quot;);</span>
+<span class="pc bpc" id="L35" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;UP&quot;);</span>
+<span class="pc bpc" id="L36" title="2 of 4 branches missed.">        assert scheduler.repOK();</span>
+        
+<span class="fc" id="L38">        scheduler.setStatus(&quot;DOWN&quot;);</span>
+<span class="pc bpc" id="L39" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;DOWN&quot;);</span>
+<span class="pc bpc" id="L40" title="2 of 4 branches missed.">        assert scheduler.repOK();</span>
+        
+<span class="fc" id="L42">        scheduler.setStatus(&quot;DO&quot;);</span>
+<span class="pc bpc" id="L43" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;DO&quot;);</span>
+<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        assert !scheduler.repOK();</span>
+        
+<span class="fc" id="L46">        scheduler.setStatus(null);</span>
+<span class="pc bpc" id="L47" title="2 of 4 branches missed.">        assert !scheduler.repOK();</span>
+        
+<span class="fc" id="L49">        scheduler = new ALS_Scheduler(null, elevator);</span>
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        assert !scheduler.repOK();</span>
+        
+<span class="fc" id="L52">        scheduler = new ALS_Scheduler(requestQueue, null);</span>
+<span class="pc bpc" id="L53" title="2 of 4 branches missed.">        assert !scheduler.repOK();</span>
+        
+        
+<span class="fc" id="L56">    }</span>
+
+    @Test
+    public void testALS_Scheduler() {
+<span class="fc" id="L60">        scheduler = null;</span>
+<span class="fc" id="L61">        scheduler = new ALS_Scheduler(requestQueue, elevator);</span>
+<span class="pc bpc" id="L62" title="3 of 6 branches missed.">        assert scheduler != null &amp;&amp; scheduler.repOK();</span>
+
+<span class="fc" id="L64">        scheduler = null;</span>
+<span class="fc" id="L65">        scheduler = new ALS_Scheduler(new RequestQueue(), elevator);</span>
+<span class="pc bpc" id="L66" title="3 of 6 branches missed.">        assert scheduler != null &amp;&amp; scheduler.repOK();</span>
+        
+<span class="fc" id="L68">        scheduler = null;</span>
+<span class="fc" id="L69">        scheduler = new ALS_Scheduler(requestQueue, new Elevator());</span>
+<span class="pc bpc" id="L70" title="3 of 6 branches missed.">        assert scheduler != null &amp;&amp; scheduler.repOK();</span>
+        
+<span class="fc" id="L72">        scheduler = null;</span>
+<span class="fc" id="L73">        scheduler = new ALS_Scheduler(new RequestQueue(), new Elevator());</span>
+<span class="pc bpc" id="L74" title="3 of 6 branches missed.">        assert scheduler != null &amp;&amp; scheduler.repOK();</span>
+<span class="fc" id="L75">    }</span>
+
+    @Test
+    public void testUpdateStatus() {
+<span class="fc" id="L79">        scheduler.updateStatus(1, 10);</span>
+<span class="pc bpc" id="L80" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;UP&quot;);</span>
+<span class="pc bpc" id="L81" title="2 of 4 branches missed.">        assert elevator.getStatus().equals(&quot;UP&quot;);</span>
+<span class="fc" id="L82">        scheduler.updateStatus(5, 6);</span>
+<span class="pc bpc" id="L83" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;UP&quot;);</span>
+<span class="pc bpc" id="L84" title="2 of 4 branches missed.">        assert elevator.getStatus().equals(&quot;UP&quot;);</span>
+<span class="fc" id="L85">        scheduler.updateStatus(10, 1);</span>
+<span class="pc bpc" id="L86" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;DOWN&quot;);</span>
+<span class="pc bpc" id="L87" title="2 of 4 branches missed.">        assert elevator.getStatus().equals(&quot;DOWN&quot;);</span>
+<span class="fc" id="L88">        scheduler.updateStatus(5, 4);</span>
+<span class="pc bpc" id="L89" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;DOWN&quot;);</span>
+<span class="pc bpc" id="L90" title="2 of 4 branches missed.">        assert elevator.getStatus().equals(&quot;DOWN&quot;);</span>
+<span class="fc" id="L91">        scheduler.updateStatus(1, 1);</span>
+<span class="pc bpc" id="L92" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;STILL&quot;);</span>
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">        assert elevator.getStatus().equals(&quot;STILL&quot;);</span>
+<span class="fc" id="L94">        scheduler.updateStatus(10, 10);</span>
+<span class="pc bpc" id="L95" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;STILL&quot;);</span>
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">        assert elevator.getStatus().equals(&quot;STILL&quot;);</span>
+<span class="fc" id="L97">        scheduler.updateStatus(5, 5);</span>
+<span class="pc bpc" id="L98" title="2 of 4 branches missed.">        assert scheduler.getStatus().equals(&quot;STILL&quot;);</span>
+<span class="pc bpc" id="L99" title="2 of 4 branches missed.">        assert elevator.getStatus().equals(&quot;STILL&quot;);</span>
+<span class="fc" id="L100">    }</span>
+
+    @Test
+    public void testRunStill() {
+<span class="pc bpc" id="L104" title="2 of 4 branches missed.">        assert elevator.getTime()== 0;</span>
+<span class="pc bpc" id="L105" title="2 of 4 branches missed.">        assert elevator.getFloor()==1;</span>
+<span class="fc" id="L106">        requestQueue.enQueue(new Request(1, 0, &quot;UP&quot;));</span>
+<span class="fc" id="L107">        Request request = requestQueue.deQueue();</span>
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">        assert !request.getIsExecuted();</span>
+<span class="fc" id="L109">        scheduler.runStill(request);</span>
+<span class="pc bpc" id="L110" title="2 of 4 branches missed.">        assert elevator.getTime()==1;</span>
+<span class="pc bpc" id="L111" title="2 of 4 branches missed.">        assert request.getIsExecuted();</span>
+        
+<span class="fc" id="L113">        requestQueue.enQueue(new Request(1, 0, &quot;DOWN&quot;));</span>
+<span class="fc" id="L114">        requestQueue.enQueue(new Request(1, 0, &quot;ER&quot;));</span>
+<span class="fc" id="L115">        requestQueue.enQueue(new Request(1, 0, &quot;UP&quot;));</span>
+<span class="fc" id="L116">        request = requestQueue.deQueue();</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">        assert !request.getIsExecuted();</span>
+<span class="fc" id="L118">        scheduler.runStill(request);</span>
+<span class="pc bpc" id="L119" title="2 of 4 branches missed.">        assert request.getIsExecuted();</span>
+<span class="pc bpc" id="L120" title="2 of 4 branches missed.">        assert elevator.getTime()==2;</span>
+        
+<span class="fc" id="L122">        request = requestQueue.deQueue();</span>
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">        assert !request.getIsExecuted();</span>
+<span class="fc" id="L124">        scheduler.runStill(request);</span>
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">        assert request.getIsExecuted();</span>
+<span class="pc bpc" id="L126" title="2 of 4 branches missed.">        assert elevator.getTime()==3;</span>
+        
+<span class="fc" id="L128">        request = requestQueue.deQueue();</span>
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">        assert !request.getIsExecuted();</span>
+<span class="fc" id="L130">        scheduler.runStill(request);</span>
+<span class="pc bpc" id="L131" title="2 of 4 branches missed.">        assert request.getIsExecuted();</span>
+<span class="pc bpc" id="L132" title="2 of 4 branches missed.">        assert elevator.getTime()==4;</span>
+<span class="fc" id="L133">    }</span>
+
+    @Test
+    public void testRunUpOrDown() {
+<span class="pc bpc" id="L137" title="2 of 4 branches missed.">        assert elevator.getTime()==0;</span>
+<span class="pc bpc" id="L138" title="2 of 4 branches missed.">        assert elevator.getFloor()==1;</span>
+<span class="fc" id="L139">        requestQueue.enQueue(new Request(10, 0, &quot;ER&quot;));</span>
+<span class="fc" id="L140">        requestQueue.enQueue(new Request(5, 0, &quot;UP&quot;));</span>
+<span class="fc" id="L141">        requestQueue.enQueue(new Request(2, 0, &quot;DOWN&quot;));</span>
+<span class="fc" id="L142">        Request request = requestQueue.deQueue();</span>
+<span class="fc" id="L143">        scheduler.setStatus(&quot;UP&quot;);</span>
+<span class="fc" id="L144">        elevator.setStatus(&quot;UP&quot;); </span>
+<span class="fc" id="L145">        scheduler.runUpOrDown(request);</span>
+<span class="fc" id="L146">        System.out.println(elevator.getFloor()+elevator.getTime());</span>
+<span class="pc bpc" id="L147" title="2 of 4 branches missed.">        assert elevator.getFloor()==10;</span>
+<span class="pc bpc" id="L148" title="2 of 4 branches missed.">        assert elevator.getTime()==6.5;</span>
+<span class="fc" id="L149">        request = requestQueue.deQueue();</span>
+<span class="pc bpc" id="L150" title="2 of 4 branches missed.">        assert request.getIsExecuted();</span>
+        
+<span class="fc" id="L152">        request = requestQueue.deQueue();</span>
+<span class="fc" id="L153">        scheduler.setStatus(&quot;DOWN&quot;);</span>
+<span class="fc" id="L154">        elevator.setStatus(&quot;DOWN&quot;);</span>
+<span class="fc" id="L155">        scheduler.runUpOrDown(request);</span>
+<span class="pc bpc" id="L156" title="2 of 4 branches missed.">        assert elevator.getFloor()==2;</span>
+<span class="pc bpc" id="L157" title="2 of 4 branches missed.">        assert elevator.getTime()==11.5;</span>
+        
+        
+<span class="fc" id="L160">    }</span>
+ 
+    @Test
+    public void testCheckSameRequest() { 
+<span class="fc" id="L164">        scheduler.checkSameRequest(new Request(5, 0, &quot;UP&quot;), 3);</span>
+<span class="fc" id="L165">        requestQueue.enQueue(new Request(5, 0, &quot;UP&quot;));</span>
+<span class="fc" id="L166">        requestQueue.enQueue(new Request(5, 1, &quot;UP&quot;));</span>
+<span class="fc" id="L167">        requestQueue.enQueue(new Request(5, 2, &quot;UP&quot;));</span>
+<span class="fc" id="L168">        requestQueue.enQueue(new Request(5, 2, &quot;UP&quot;));</span>
+<span class="fc" id="L169">        requestQueue.enQueue(new Request(5, 2, &quot;UP&quot;));</span>
+        
+<span class="fc" id="L171">        Request request = new Request(5, 2, &quot;UP&quot;);</span>
+<span class="fc" id="L172">        request.setExecuted();</span>
+<span class="fc" id="L173">        requestQueue.enQueue(request);</span>
+        
+<span class="fc" id="L175">        requestQueue.enQueue(new Request(5, 2, &quot;DOWN&quot;));</span>
+<span class="fc" id="L176">        requestQueue.enQueue(new Request(5, 2, &quot;ER&quot;)); </span>
+<span class="fc" id="L177">        requestQueue.enQueue(new Request(6, 2, &quot;UP&quot;)); </span>
+<span class="fc" id="L178">        requestQueue.enQueue(new Request(4, 2, &quot;UP&quot;)); </span>
+
+<span class="fc" id="L180">        request = new Request(5, 2, &quot;UP&quot;);</span>
+<span class="fc" id="L181">        request.setSame();</span>
+<span class="fc" id="L182">        requestQueue.enQueue(request); </span>
+        
+        
+<span class="fc" id="L185">        requestQueue.enQueue(new Request(5, 3, &quot;UP&quot;));</span>
+<span class="fc" id="L186">        requestQueue.enQueue(new Request(5, 4, &quot;UP&quot;));</span>
+<span class="fc" id="L187">        requestQueue.enQueue(new Request(5, 4, &quot;UP&quot;));</span>
+<span class="fc" id="L188">        requestQueue.enQueue(new Request(2, 5, &quot;DOWN&quot;));</span>
+        
+<span class="fc" id="L190">        scheduler.checkSameRequest(new Request(5, 0, &quot;UP&quot;), 3);</span>
+<span class="pc bpc" id="L191" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L192" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L193" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L194" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L195" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L196" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L197" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L198" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L199" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L200" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L201" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L202" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L203" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L204" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsSame();</span>
+<span class="pc bpc" id="L205" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsSame();</span>
+        
+<span class="fc" id="L207">    }</span>
+
+    @Test
+    public void testCheckPiggybacking() {
+        
+<span class="pc bpc" id="L212" title="2 of 4 branches missed.">        assert requestQueue.getFront()==0;</span>
+<span class="pc bpc" id="L213" title="2 of 4 branches missed.">        assert !scheduler.checkPiggybacking(new Request(5, 0, &quot;UP&quot;)); </span>
+        
+<span class="fc" id="L215">        elevator.setStatus(&quot;UP&quot;); </span>
+<span class="fc" id="L216">        scheduler.setStatus(&quot;UP&quot;);</span>
+<span class="fc" id="L217">        elevator.setFloor(4);</span>
+<span class="fc" id="L218">        elevator.setTime(3); </span>
+<span class="fc" id="L219">        requestQueue.enQueue(new Request(5, 0, &quot;ER&quot;));</span>
+<span class="fc" id="L220">        requestQueue.enQueue(new Request(8, 0, &quot;ER&quot;));</span>
+<span class="fc" id="L221">        requestQueue.enQueue(new Request(4, 0, &quot;DOWN&quot;));</span>
+<span class="fc" id="L222">        requestQueue.enQueue(new Request(4, 0, &quot;UP&quot;));</span>
+<span class="fc" id="L223">        requestQueue.enQueue(new Request(4, 0, &quot;ER&quot;));</span>
+        
+<span class="fc" id="L225">        Request request = requestQueue.deQueue();</span>
+<span class="pc bpc" id="L226" title="2 of 4 branches missed.">        assert scheduler.checkPiggybacking(request);</span>
+<span class="pc bpc" id="L227" title="2 of 4 branches missed.">        assert !request.getIsExecuted(); </span>
+<span class="pc bpc" id="L228" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsExecuted();</span>
+<span class="pc bpc" id="L229" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsExecuted();</span>
+<span class="pc bpc" id="L230" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsExecuted();</span>
+<span class="pc bpc" id="L231" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsExecuted();</span>
+        
+<span class="fc" id="L233">        elevator.setFloor(4);</span>
+<span class="fc" id="L234">        elevator.setTime(4);</span>
+<span class="fc" id="L235">        requestQueue.enQueue(new Request(4, 3, &quot;UP&quot;));</span>
+<span class="fc" id="L236">        request = new Request(4, 3, &quot;ER&quot;);</span>
+<span class="fc" id="L237">        request.setSame();</span>
+<span class="fc" id="L238">        requestQueue.enQueue(request); </span>
+<span class="fc" id="L239">        request = new Request(4, 3, &quot;UP&quot;);</span>
+<span class="fc" id="L240">        request.setExecuted(); </span>
+<span class="fc" id="L241">        requestQueue.enQueue(request); </span>
+<span class="fc" id="L242">        requestQueue.enQueue(new Request(4, 4, &quot;ER&quot;));</span>
+<span class="fc" id="L243">        requestQueue.enQueue(new Request(4, 4, &quot;DOWN&quot;));</span>
+<span class="fc" id="L244">        requestQueue.enQueue(new Request(4, 4, &quot;UP&quot;));</span>
+        
+<span class="fc" id="L246">        request = requestQueue.deQueue();</span>
+<span class="pc bpc" id="L247" title="2 of 4 branches missed.">        assert scheduler.checkPiggybacking(request);</span>
+<span class="pc bpc" id="L248" title="2 of 4 branches missed.">        assert request.getIsExecuted();</span>
+<span class="pc bpc" id="L249" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsExecuted();</span>
+<span class="pc bpc" id="L250" title="2 of 4 branches missed.">        assert requestQueue.deQueue().getIsExecuted();</span>
+<span class="pc bpc" id="L251" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsExecuted();</span>
+<span class="pc bpc" id="L252" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsExecuted();</span>
+<span class="pc bpc" id="L253" title="2 of 4 branches missed.">        assert !requestQueue.deQueue().getIsExecuted();</span>
+<span class="fc" id="L254">    }</span>
+
+    @Test
+    public void testChangeMainRequest() {
+        
+<span class="fc" id="L259">        Request request = new Request(5, 0, &quot;UP&quot;);</span>
+<span class="pc bpc" id="L260" title="2 of 4 branches missed.">        assert scheduler.changeMainRequest(request) == request;</span>
+         
+<span class="fc" id="L262">        elevator.setFloor(5);</span>
+<span class="fc" id="L263">        elevator.setTime(3);</span>
+<span class="fc" id="L264">        elevator.setStatus(&quot;UP&quot;); </span>
+<span class="fc" id="L265">        scheduler.setStatus(&quot;UP&quot;);</span>
+<span class="fc" id="L266">        requestQueue.enQueue(request);</span>
+<span class="fc" id="L267">        request = new Request(4, 0, &quot;ER&quot;);</span>
+<span class="fc" id="L268">        request.setSame();</span>
+<span class="fc" id="L269">        requestQueue.enQueue(request); </span>
+<span class="fc" id="L270">        request = new Request(4, 0, &quot;UP&quot;);</span>
+<span class="fc" id="L271">        request.setExecuted(); </span>
+<span class="fc" id="L272">        requestQueue.enQueue(request);</span>
+<span class="fc" id="L273">        requestQueue.enQueue(new Request(1, 0, &quot;UP&quot;));</span>
+<span class="fc" id="L274">        requestQueue.enQueue(new Request(2, 0, &quot;DOWN&quot;));</span>
+<span class="fc" id="L275">        requestQueue.enQueue(new Request(3, 0, &quot;ER&quot;));</span>
+<span class="fc" id="L276">        requestQueue.enQueue(new Request(4, 1, &quot;ER&quot;));</span>
+<span class="fc" id="L277">        requestQueue.enQueue(new Request(5, 1, &quot;ER&quot;));</span>
+<span class="fc" id="L278">        requestQueue.enQueue(new Request(7, 1, &quot;UP&quot;));</span>
+<span class="fc" id="L279">        requestQueue.enQueue(new Request(7, 1, &quot;DOWN&quot;));</span>
+<span class="fc" id="L280">        request = requestQueue.deQueue();</span>
+<span class="pc bpc" id="L281" title="2 of 4 branches missed.">        assert scheduler.changeMainRequest(request) == request;</span>
+        
+<span class="fc" id="L283">        requestQueue.enQueue(new Request(7, 1, &quot;ER&quot;));</span>
+<span class="pc bpc" id="L284" title="2 of 4 branches missed.">        assert scheduler.changeMainRequest(request) != request; </span>
+        
+<span class="fc" id="L286">        elevator.setTime(5); </span>
+<span class="fc" id="L287">        elevator.setFloor(7);</span>
+<span class="fc" id="L288">        requestQueue.enQueue(new Request(9, 4, &quot;UP&quot;));</span>
+<span class="fc" id="L289">        requestQueue.enQueue(new Request(9, 4, &quot;DOWN&quot;));</span>
+<span class="fc" id="L290">        requestQueue.enQueue(new Request(9, 4, &quot;ER&quot;));</span>
+<span class="fc" id="L291">        request = new Request(7, 1, &quot;ER&quot;);</span>
+<span class="pc bpc" id="L292" title="2 of 4 branches missed.">        assert scheduler.changeMainRequest(request) == request;</span>
+        
+<span class="fc" id="L294">        requestQueue = new RequestQueue();</span>
+<span class="fc" id="L295">        scheduler = new ALS_Scheduler(requestQueue, elevator);</span>
+<span class="fc" id="L296">        elevator.setStatus(&quot;DOWN&quot;); </span>
+<span class="fc" id="L297">        scheduler.setStatus(&quot;DOWN&quot;);</span>
+<span class="fc" id="L298">        requestQueue.enQueue(new Request(8, 3, &quot;ER&quot;));</span>
+<span class="fc" id="L299">        requestQueue.enQueue(new Request(7, 3, &quot;ER&quot;));</span>
+<span class="fc" id="L300">        request = new Request(7, 1, &quot;ER&quot;);</span>
+<span class="pc bpc" id="L301" title="2 of 4 branches missed.">        assert scheduler.changeMainRequest(request) == request;</span>
+        
+<span class="fc" id="L303">        requestQueue.enQueue(new Request(4, 3, &quot;ER&quot;));</span>
+<span class="pc bpc" id="L304" title="2 of 4 branches missed.">        assert scheduler.changeMainRequest(request) != request;</span>
+         
+<span class="fc" id="L306">        elevator.setStatus(&quot;STILL&quot;); </span>
+<span class="fc" id="L307">        scheduler.setStatus(&quot;STILL&quot;);</span>
+<span class="fc" id="L308">        request = new Request(7, 1, &quot;ER&quot;);</span>
+<span class="pc bpc" id="L309" title="2 of 4 branches missed.">        assert scheduler.changeMainRequest(request) == request;</span>
+<span class="fc" id="L310">    } </span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>2018_spring_13 (2018年6月6日 下午4:56:45)</div></body></html>

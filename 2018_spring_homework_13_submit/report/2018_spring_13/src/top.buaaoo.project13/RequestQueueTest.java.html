@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RequestQueueTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">2018_spring_13 (2018年6月6日 下午4:56:45)</a> &gt; <a href="../../index.html" class="el_group">2018_spring_13</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">top.buaaoo.project13</a> &gt; <span class="el_source">RequestQueueTest.java</span></div><h1>RequestQueueTest.java</h1><pre class="source lang-java linenums">package top.buaaoo.project13;
+
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+<span class="pc bpc" id="L8" title="1 of 2 branches missed.">public class RequestQueueTest {</span>
+<span class="fc" id="L9">    private static int i;</span>
+    private RequestQueue requestQueue; 
+
+    @Before
+    public void setUp() throws Exception {
+<span class="fc" id="L14">        requestQueue = new RequestQueue();</span>
+<span class="fc" id="L15">        System.out.println(&quot;-----test RequestQueue &quot;+ i +&quot; begins-----&quot;);</span>
+<span class="fc" id="L16">    }</span>
+
+    @After
+    public void tearDown() throws Exception {
+<span class="fc" id="L20">        requestQueue = null;</span>
+<span class="fc" id="L21">        System.out.println(&quot;-----test RequestQueue &quot;+ i++ +&quot; ends-----&quot;);</span>
+<span class="fc" id="L22">    } </span>
+ 
+    @Test
+    public void testRepOK() {
+<span class="pc bpc" id="L26" title="2 of 4 branches missed.">        assert requestQueue.repOK();</span>
+<span class="fc" id="L27">        requestQueue.setFront(-1);</span>
+<span class="pc bpc" id="L28" title="2 of 4 branches missed.">        assert requestQueue.repOK()==false;</span>
+<span class="fc" id="L29">        requestQueue.setFront(0);</span>
+<span class="fc" id="L30">        requestQueue.setRear(-2);</span>
+<span class="pc bpc" id="L31" title="2 of 4 branches missed.">        assert requestQueue.repOK()==false;</span>
+<span class="fc" id="L32">        requestQueue.setRear(0);</span>
+<span class="fc" id="L33">        requestQueue.setCount(-1);</span>
+<span class="pc bpc" id="L34" title="2 of 4 branches missed.">        assert requestQueue.repOK()==false;</span>
+<span class="fc" id="L35">        requestQueue.setCount(1001);</span>
+<span class="pc bpc" id="L36" title="2 of 4 branches missed.">        assert requestQueue.repOK()==false;</span>
+<span class="fc" id="L37">        requestQueue.setCount(0);</span>
+<span class="fc" id="L38">        requestQueue.setQueue(null);;</span>
+<span class="pc bpc" id="L39" title="2 of 4 branches missed.">        assert requestQueue.repOK()==false;</span>
+        
+        
+<span class="fc" id="L42">    }</span>
+
+    @Test
+    public void testEnQueue() {
+<span class="fc" id="L46">        Request request = new Request(1, 0, &quot;UP&quot;);</span>
+        
+<span class="pc bpc" id="L48" title="2 of 4 branches missed.">        assert !requestQueue.isFull();</span>
+<span class="pc bpc" id="L49" title="3 of 6 branches missed.">        assert requestQueue.getCount()==0 &amp;&amp; requestQueue.getRear()==-1;</span>
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        assert requestQueue.enQueue(request);</span>
+<span class="pc bpc" id="L51" title="4 of 8 branches missed.">        assert requestQueue.getCount()==1 &amp;&amp; requestQueue.getRear()==0 &amp;&amp; requestQueue.get(requestQueue.getRear())==request;</span>
+        
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for(int i = 0;i&lt;999;i++) {</span>
+<span class="pc bpc" id="L54" title="2 of 4 branches missed.">            assert requestQueue.enQueue(new Request(1, i, &quot;UP&quot;));</span>
+        }
+        
+<span class="pc bpc" id="L57" title="2 of 4 branches missed.">        assert requestQueue.isFull();</span>
+<span class="pc bpc" id="L58" title="3 of 6 branches missed.">        assert requestQueue.getCount()==1000 &amp;&amp; requestQueue.getRear()==999;</span>
+<span class="pc bpc" id="L59" title="2 of 4 branches missed.">        assert !requestQueue.enQueue(request);</span>
+<span class="pc bpc" id="L60" title="3 of 6 branches missed.">        assert requestQueue.getCount()==1000 &amp;&amp; requestQueue.getRear()==999;</span>
+        
+        
+<span class="fc" id="L63">    }</span>
+
+    @Test
+    public void testDeQueue() {
+<span class="fc" id="L67">        Request request = new Request(5, 0, &quot;UP&quot;);</span>
+<span class="fc" id="L68">        Request request2 = new Request(8, 0, &quot;UP&quot;);</span>
+        
+<span class="pc bpc" id="L70" title="2 of 4 branches missed.">        assert requestQueue.isEmpty();</span>
+<span class="pc bpc" id="L71" title="3 of 6 branches missed.">        assert requestQueue.getCount()==0 &amp;&amp; requestQueue.getFront()==0;</span>
+<span class="pc bpc" id="L72" title="2 of 4 branches missed.">        assert requestQueue.deQueue()==null;</span>
+<span class="pc bpc" id="L73" title="3 of 6 branches missed.">        assert requestQueue.getCount()==0 &amp;&amp; requestQueue.getFront()==0;</span>
+        
+<span class="pc bpc" id="L75" title="2 of 4 branches missed.">        assert requestQueue.enQueue(request);</span>
+<span class="pc bpc" id="L76" title="2 of 4 branches missed.">        assert requestQueue.enQueue(request2);</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for(int i = 0;i&lt;998;i++) {</span>
+<span class="pc bpc" id="L78" title="2 of 4 branches missed.">            assert requestQueue.enQueue(new Request(1, i, &quot;UP&quot;));</span>
+        }
+        
+<span class="pc bpc" id="L81" title="2 of 4 branches missed.">        assert !requestQueue.isEmpty();</span>
+<span class="pc bpc" id="L82" title="4 of 8 branches missed.">        assert requestQueue.getCount()==1000 &amp;&amp; requestQueue.getFront()==0 &amp;&amp; requestQueue.get(requestQueue.getFront())==request;</span>
+<span class="pc bpc" id="L83" title="2 of 4 branches missed.">        assert requestQueue.deQueue()== request;</span>
+<span class="pc bpc" id="L84" title="3 of 6 branches missed.">        assert requestQueue.getCount()==999 &amp;&amp; requestQueue.getFront()==1;</span>
+<span class="pc bpc" id="L85" title="2 of 4 branches missed.">        assert requestQueue.deQueue()== request2;</span>
+<span class="pc bpc" id="L86" title="3 of 6 branches missed.">        assert requestQueue.getCount()==998 &amp;&amp; requestQueue.getFront()==2;</span>
+        
+<span class="fc" id="L88">    }</span>
+
+    @Test
+    public void testIsEmpty() {
+<span class="pc bpc" id="L92" title="2 of 4 branches missed.">        assert requestQueue.getCount() == 0;</span>
+<span class="pc bpc" id="L93" title="2 of 4 branches missed.">        assert requestQueue.isEmpty();</span>
+        
+<span class="fc" id="L95">        requestQueue.enQueue(new Request(1, 1, &quot;UP&quot;));</span>
+        
+<span class="pc bpc" id="L97" title="2 of 4 branches missed.">        assert requestQueue.getCount() == 1;</span>
+<span class="pc bpc" id="L98" title="2 of 4 branches missed.">        assert !requestQueue.isEmpty();</span>
+<span class="fc" id="L99">    }</span>
+
+    @Test
+    public void testIsFull() {
+<span class="pc bpc" id="L103" title="2 of 4 branches missed.">        assert requestQueue.getCount() == 0;</span>
+<span class="pc bpc" id="L104" title="2 of 4 branches missed.">        assert !requestQueue.isFull();</span>
+
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        for(int i = 0;i&lt;1000;i++) {</span>
+<span class="fc" id="L107">            requestQueue.enQueue(new Request(1, i, &quot;UP&quot;));</span>
+        }
+        
+<span class="pc bpc" id="L110" title="2 of 4 branches missed.">        assert requestQueue.getCount() == 1000;</span>
+<span class="pc bpc" id="L111" title="2 of 4 branches missed.">        assert requestQueue.isFull();</span>
+<span class="fc" id="L112">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>2018_spring_13 (2018年6月6日 下午4:56:45)</div></body></html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FloorTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">2018_spring_13 (2018年6月6日 下午4:56:45)</a> &gt; <a href="../../index.html" class="el_group">2018_spring_13</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">top.buaaoo.project13</a> &gt; <span class="el_source">FloorTest.java</span></div><h1>FloorTest.java</h1><pre class="source lang-java linenums">package top.buaaoo.project13;
+
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+<span class="fc" id="L8">public class FloorTest {</span>
+
+    private static int i;
+    @SuppressWarnings(&quot;unused&quot;)
+    private Floor floor; 
+
+    @Before
+    public void setUp() throws Exception {
+<span class="fc" id="L16">        floor = new Floor();</span>
+<span class="fc" id="L17">        System.out.println(&quot;-----test Floor &quot;+ i +&quot; begins-----&quot;);</span>
+<span class="fc" id="L18">    }</span>
+
+    @After
+    public void tearDown() throws Exception {
+<span class="fc" id="L22">        floor = null;</span>
+<span class="fc" id="L23">        System.out.println(&quot;-----test Floor &quot;+ i++ +&quot; ends-----&quot;);</span>
+<span class="fc" id="L24">    }</span>
+
+    @Test
+    public void test() {
+        
+<span class="fc" id="L29">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>2018_spring_13 (2018年6月6日 下午4:56:45)</div></body></html>
